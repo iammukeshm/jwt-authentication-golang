@@ -1,13 +1,13 @@
 @host = localhost:8080
 
 // Register User
-POST http://{{host}}/api/auth/register HTTP/1.1
+POST http://{{host}}/api/user/register HTTP/1.1
 content-type: application/json
     
 {
     "name": "Mukesh Murugan",
     "username": "mukesh.murugan",
-    "email": "test@golang.com",
+    "email": "mukesh@go.com",
     "password": "123465789"
 }
 

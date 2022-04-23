@@ -3,13 +3,14 @@ package main
 import (
 	"jwt-authentication-golang/controllers"
 	"jwt-authentication-golang/database"
+	"jwt-authentication-golang/middlewares"
 
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
 	// Initialize Database
-	database.Connect("root:root@tcp(localhost:3306)/jwt_demo")
+	database.Connect("root:root@tcp(localhost:3306)/jwt_demo?parseTime=true")
 	database.Migrate()
 
 	// Initialize Router
@@ -19,16 +20,13 @@ func main() {
 
 func initRouter() *gin.Engine {
 	router := gin.Default()
-	router.GET("/ping", func(c *gin.Context) {
-		c.String(200, "pong")
-	})
-
 	api := router.Group("/api")
 	{
-		auth := api.Group("/auth")
+		api.POST("/token", controllers.GenerateToken)
+		api.POST("/user/register", controllers.RegisterUser)
+		secured := api.Group("/secured").Use(middlewares.Auth())
 		{
-			auth.POST("/login", controllers.Login)
-			auth.POST("/register", controllers.Register)
+			secured.GET("/ping", controllers.Ping)
 		}
 	}
 	return router
