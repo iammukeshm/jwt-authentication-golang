@@ -1,7 +1,11 @@
 package controllers
 
-import "github.com/gin-gonic/gin"
+import (
+	"net/http"
+
+	"github.com/gin-gonic/gin"
+)
 
 func Ping(context *gin.Context) {
-	context.JSON(200, gin.H{"message": "pong"})
+	context.JSON(http.StatusOK, gin.H{"message": "pong"})
 }
